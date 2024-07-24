@@ -1,12 +1,9 @@
-import './App.css';
+import AppRoutes from "./routes/AppRoutes";
+import "./App.scss";
 
 function App() {
   return (
-    <div className="App">
-      <h1 className="text-3xl font-bold underline text-center">
-        Hello world!
-      </h1>
-    </div>
+    <AppRoutes />
   );
 }
 
