@@ -36,6 +36,14 @@ export const logoutRequest = createAsyncThunk(
     }
 );
 
+export const registerRequest = createAsyncThunk(
+    "auth/register",
+    async (data:FormData) => {
+        const response = await axiosInstance.post<UserInfo>("auth/register", data);
+        return response.data;
+    }
+);
+
 
 
 const authSlice = createSlice({
@@ -67,7 +75,17 @@ const authSlice = createSlice({
             })
             .addCase(logoutRequest.rejected, (state) => {
                 state.isLoading = false;
-            });
+            })
+            .addCase(registerRequest.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(registerRequest.fulfilled, (state) => {
+                state.isLoading = false;
+            })
+            .addCase(registerRequest.rejected, (state, action) => {
+                state.isLoading = false;
+            })
+
 
     },
 
