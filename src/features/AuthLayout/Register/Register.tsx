@@ -52,7 +52,6 @@ const Register = (): JSX.Element => {
 
   const convertData = (data:RegisterFormInputs) => {
     const formData = new FormData();
-    console.log(data);
     Object.keys(data).forEach(key => {
       const value = data[key as keyof RegisterFormInputs];
       if (value) {

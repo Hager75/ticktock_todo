@@ -1,4 +1,15 @@
     body{
-        // @apply dark:bg-[#1e293b] dark:text-[#ffffffb3];
         @apply dark:bg-[#1e293b] dark:text-white;
+    }
+
+    .text-general{
+        @apply text-black dark:text-white;
+    }
+
+    .text-secondary{
+        @apply text-secondary-light dark:text-secondary-dark;
+    }
+
+    .text-primary{
+        @apply text-primary-light dark:text-primary-dark;
     }
