@@ -1,3 +1,5 @@
+export const APP_NAME = "Ticktock Todo"
+
 export const IMAGE_TYPES = [
     "image/jpeg",
     "image/png",
@@ -5,4 +7,9 @@ export const IMAGE_TYPES = [
     "image/jpg",
 ];
 
-export const IMAGE_MAX_SIZE = 5242880  
+export const IMAGE_MAX_SIZE = 5242880;
+
+export const THEME_MODE = {
+    light: 'light',
+    dark: "dark"
+}

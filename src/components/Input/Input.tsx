@@ -97,11 +97,12 @@ const Input: React.FC<InputProps> = ({
       </>
       <FormHelperText
         error={isInputHasErr}
-        className={`flex ${helperTextClass}`}
+        className={`flex items-center ${helperTextClass && helperTextClass}`}
       >
         {errMsg?.trim() && isInputHasErr ? (
           <>
             <WarningRounded className="me-1" />
+            <span>{errMsg}</span>
           </>
         ) : (
           helperText
