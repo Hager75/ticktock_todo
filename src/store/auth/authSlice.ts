@@ -38,15 +38,9 @@ export const logoutRequest = createAsyncThunk(
 
 export const registerRequest = createAsyncThunk(
     "auth/register",
-    async (data: { email: string; password: string, name: string, image?:any }) => {
-        //TODO: to use data in real api
-        const fakeData = {
-            username: 'emilys',
-            password: 'emilyspass',
-        }
-        const response = await axiosInstance.post<UserInfo>("auth/register", fakeData);
+    async (data:FormData) => {
+        const response = await axiosInstance.post<UserInfo>("auth/register", data);
         return response.data;
-
     }
 );
 
@@ -85,9 +79,8 @@ const authSlice = createSlice({
             .addCase(registerRequest.pending, (state) => {
                 state.isLoading = true;
             })
-            .addCase(registerRequest.fulfilled, (state, action: PayloadAction<UserInfo>) => {
+            .addCase(registerRequest.fulfilled, (state) => {
                 state.isLoading = false;
-                state.userInfo = action.payload;
             })
             .addCase(registerRequest.rejected, (state, action) => {
                 state.isLoading = false;

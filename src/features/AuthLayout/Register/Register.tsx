@@ -50,16 +50,33 @@ const Register = (): JSX.Element => {
     },
   });
 
+  const convertData = (data:RegisterFormInputs) => {
+    const formData = new FormData();
+    console.log(data);
+    Object.keys(data).forEach(key => {
+      const value = data[key as keyof RegisterFormInputs];
+      if (value) {
+        if (key === 'image' && value instanceof File) {
+          formData.append(key, value);
+        } else {
+          formData.append(key, value.toString());
+        }
+      }
+    })
+    return formData
+  }
+
   const onSubmit: SubmitHandler<RegisterFormInputs> = async (data) => {
     // based on bussiness to upload image first to serve then send request to BE or to send image with data as a form data
-
+    const formData = convertData(data);
     try {
-        await dispatch(registerRequest(data)).unwrap();
-        navigate(ROUTE_PATHS.login);
+      await dispatch(registerRequest(formData)).unwrap();
+      navigate(ROUTE_PATHS.login);
     } catch (err) {
       console.error('Register failed:', err);
     }
   };
+
 
   return (
     <div className="flex flex-1 w-full justify-center items-center">
