@@ -33,6 +33,8 @@ const Input: React.FC<InputProps> = ({
   labelAdornment,
   inputEndAdornment,
   boxLabelStyle,
+  multiline = false,
+  rows,
   ...props
 }) => {
 
@@ -68,6 +70,8 @@ const Input: React.FC<InputProps> = ({
           }}
           className={`${inputClass}`}
           autoComplete="off"
+          multiline={multiline}
+          rows={rows}
           InputProps={{
             startAdornment: startAdornment ? (
               <InputAdornment position="start">{startAdornment}</InputAdornment>

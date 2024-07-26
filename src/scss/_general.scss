@@ -13,3 +13,7 @@
     .text-primary{
         @apply text-primary-light dark:text-primary-dark;
     }
+
+    .bg-general{
+        @apply bg-white dark:bg-grey-mid 
+    } 

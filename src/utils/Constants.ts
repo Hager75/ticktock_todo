@@ -13,3 +13,9 @@ export const THEME_MODE = {
     light: 'light',
     dark: "dark"
 }
+
+export const STATUS_VALUES = {
+    completed:"2",
+    inprogress:"1",
+    todo:"3"
+}

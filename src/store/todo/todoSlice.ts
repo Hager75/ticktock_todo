@@ -1,37 +1,22 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { axiosInstance } from "../../network/axios";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+
 import { TodoState } from "./todo.interface";
+import { addTask, editTask, getList, getTaskDetails, removeTask } from "./todoThunks";
+import { TaskRes } from "../../features/Todo/Todo.interface";
 
 
 const initialState: TodoState = {
     list: [],
     isLoading: false,
+    task:null,
 };
-
-export const getList = createAsyncThunk(
-    "todo/list",
-    async () => {
-        const response = await axiosInstance.get<any>("todos/random/8");
-        return response.data;
-
-    }
-);
-
-export const removeTask = createAsyncThunk(
-    "todo/removeTask",
-    async (id: number) => {
-        const response = await axiosInstance.get<any>(`todos/${id}`);
-        return response.data;
-    }
-);
-
 
 const todoSlice = createSlice({
     name: "todo",
     initialState,
     reducers: {
-        clearTodoState(state) {
-            state = initialState;
+        clearTodoState() {            
+            return initialState;
         }
     },
     extraReducers: (builder) => {
@@ -50,17 +35,46 @@ const todoSlice = createSlice({
                 state.isLoading = true;
             })
             .addCase(removeTask.fulfilled, (state, action: PayloadAction<any>) => {
-                console.log(state, action.payload);
-
                 state.isLoading = false;
                 state.list = state.list.filter(task => task.id !== action.payload.id);
             })
-            .addCase(removeTask.rejected, (state, action) => {
+            .addCase(removeTask.rejected, (state) => {
+                state.isLoading = false;
+            })
+            .addCase(addTask.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(addTask.fulfilled, (state, action: PayloadAction<any>) => {
+                state.isLoading = false;
+                state.list = action.payload;
+            })
+            .addCase(addTask.rejected, (state) => {
+                state.isLoading = false;
+            })
+            .addCase(editTask.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(editTask.fulfilled, (state, action: PayloadAction<any>) => {
+                state.isLoading = false;
+                state.list = [...state.list,action.payload];
+            })
+            .addCase(editTask.rejected, (state) => {
+                state.isLoading = false;
+            })
+            .addCase(getTaskDetails.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(getTaskDetails.fulfilled, (state, action: PayloadAction<TaskRes>) => {
+                state.isLoading = false;
+                state.task = action.payload;
+            })
+            .addCase(getTaskDetails.rejected, (state) => {
                 state.isLoading = false;
             })
     },
 
 });
+
 export const { clearTodoState } =
     todoSlice.actions;
 

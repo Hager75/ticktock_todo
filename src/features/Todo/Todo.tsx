@@ -5,7 +5,7 @@ import {
     Collapse,
     CircularProgress
 } from '@mui/material';
-import { Add, Delete, ReportProblemRounded, ErrorOutlineRounded } from '@mui/icons-material';
+import { Add, Delete, ReportProblemRounded, ErrorOutlineRounded, BorderColorRounded } from '@mui/icons-material';
 import { TransitionGroup } from 'react-transition-group';
 
 import Button from '../../components/Button/Button';
@@ -13,7 +13,8 @@ import Modal from '../../components/Modal/Modal';
 import { ROUTE_PATHS } from '../../utils/RoutesPaths';
 import TruncateText from '../../components/TruncateText/TruncateText';
 import { useAppDispatch, useAppSelector } from '../../store';
-import { getList, removeTask, clearTodoState } from '../../store/todo/todoSlice';
+import { clearTodoState } from '../../store/todo/todoSlice';
+import { getList, removeTask } from '../../store/todo/todoThunks';
 import { Task } from './Todo.interface';
 
 const TodoList = () => {
@@ -29,12 +30,16 @@ const TodoList = () => {
         return () => {
             dispatch(clearTodoState());
         };
-    }, []);
+    }, [dispatch]);
 
 
     const handleAddTask = () => {
         navigate(ROUTE_PATHS.addTask);
     };
+
+    const handleEditTask = (task:Task) => {
+        navigate(ROUTE_PATHS.editTask.replace(":id", task.id.toString()));
+    }
 
     const handleConfirmDeleteModal = () => {
         dispatch(removeTask(deleteTaskModal.task?.id!));
@@ -68,6 +73,9 @@ const TodoList = () => {
                         </>
                     }
                 />
+                <IconButton edge="end" aria-label="edit" onClick={() => handleEditTask(task)}>
+                    <BorderColorRounded color='action' />
+                </IconButton>
                 <IconButton edge="end" aria-label="delete" onClick={() => handleDeleteTask(task)}>
                     <Delete color='error' />
                 </IconButton>
@@ -96,22 +104,22 @@ const TodoList = () => {
                 </div>
             }
 
-            {taskList?.length > 0 && !isLoading &&
+            {taskList?.length === 0 && !isLoading &&
                 <Typography className='flex justify-center items-center h-56 font-semibold !text-lg' color="secondary">
                     <ErrorOutlineRounded color='secondary' className='me-1' />   There is no tasks, you could add one
                 </Typography>
             }
+    
             <div>
                 <List>
                     <TransitionGroup>
-                        {taskList?.length == 0 && !isLoading && taskList.map((task) => (
+                        {taskList?.length > 0 && !isLoading && taskList.map((task) => (
                             <Collapse key={task.id}>{renderItem(task, handleDeleteTask)}</Collapse>
-
                         ))}
                     </TransitionGroup>
                 </List>
 
-            </div>
+            </div> 
             <Modal
                 modalTitle={<span className="!text-xxl flex items-center"><ReportProblemRounded color="error" className='mx-2 !text-xxl' /> Alert!</span>}
                 handleClose={() => { handleCloseDeleteModal() }}
