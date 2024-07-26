@@ -7,4 +7,5 @@ export interface ButtonProps {
   disabled?: boolean;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   color?: "primary" | "secondary" | "error";
+  icon?: React.ReactNode;
 }

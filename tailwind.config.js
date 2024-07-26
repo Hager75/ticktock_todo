@@ -8,17 +8,19 @@ module.exports = {
     extend: {},
     colors: {
       primary: { dark: "#90caf9", light: "#1976d2" },
-      secondary: "#9c27b0",
+      secondary: {light:"#9c27b0", dark:"#ce93d8"},
       danger: "#DF4E4E",
       warning: "#ff9800",
       success: "#198754",
       white: "#ffffff",
+      black:"#000",
       error: "#FF0000",
       orange: "#EA9650",
       yellow: "#e4c002",
       green: "#14ba6d",
       grey: {
-        light: "#ffffffb3"
+        light: "#ffffffb3",
+        mid:"#373a40"
       }
     },
     fontSize: {
@@ -31,6 +33,7 @@ module.exports = {
       mLg: "1.3rem",
       lg: "1.4rem",
       xl: "1.6rem",
+      xxl: "1.8rem",
     },
     fontWeight: {
       extraLight: 200,

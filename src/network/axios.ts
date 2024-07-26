@@ -35,9 +35,7 @@ axiosInstance.interceptors.request.use((request: any) => {
 // Response interceptor to handle responses and errors
 axiosInstance.interceptors.response.use(
     (response) => response,
-    (error) => {
-        console.log(error);
-        
+    (error) => {        
         let errorMsg = "";
         if (error?.response?.status === 401) {
             errorMsg = "Unauthorized access - please login."

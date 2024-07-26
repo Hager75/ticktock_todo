@@ -11,6 +11,7 @@ const Button: React.FC<ButtonProps> = ({
   disabled = false,
   onClick,
   color = "primary",
+  icon
 }) => (
   <MuiButton
     className={`!normal-case ${className}`}
@@ -20,6 +21,7 @@ const Button: React.FC<ButtonProps> = ({
     onClick={onClick}
     disableFocusRipple
     color={color}
+    startIcon={icon}
   >
     <span className={labelClass}>{label}</span>
   </MuiButton>

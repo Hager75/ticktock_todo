@@ -3,11 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 
 import authSlice from "./auth/authSlice";
 import userPreferencesSlice from "./userPreferences/userPreferencesSlice";
+import todoSlice from "./todo/todoSlice";
 
 export const store = configureStore({
   reducer: {
     auth: authSlice,
     userPreferences: userPreferencesSlice,
+    todo: todoSlice,
   },
 });
 

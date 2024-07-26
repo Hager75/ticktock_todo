@@ -6,7 +6,7 @@ export interface InputProps {
   value: string | number;
   onChange: (value: string) => void;
   id?: string;
-  label?: string ;
+  label?: string;
   type?: string;
   placeholder?: string;
   required?: boolean;
@@ -25,4 +25,6 @@ export interface InputProps {
   helperTextClass?: string;
   labelAdornment?: string | React.ReactNode;
   boxLabelStyle?: SxProps;
+  multiline?: boolean;
+  rows?: number;
 }
