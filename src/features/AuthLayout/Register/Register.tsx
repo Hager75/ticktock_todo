@@ -4,24 +4,23 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
 import { useAppDispatch, useAppSelector } from "../../../store";
-import { loginRequest } from "../../../store/auth/authSlice";
+// import { RegisterRequest } from "../../../store/auth/authSlice";
 import { ROUTE_PATHS } from "../../../utils/RoutesPaths";
 import Button from "../../../components/Button/Button";
-import Checkbox from "../../../components/Checkbox/Checkbox";
 import Input from "../../../components/Input/Input";
 
-interface LoginFormInputs {
+interface RegisterFormInputs {
   email: string;
   password: string;
-  rememberMe: boolean;
+//   userName:string;
+//   avater:File;
 }
 const schema = yup.object().shape({
   email: yup.string().email("Invalid Email").required("Email is required"),
   password: yup.string().required("Password is required"),
-  rememberMe: yup.boolean().required(),
 });
 
-const Login = (): JSX.Element => {
+const Register = (): JSX.Element => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const isLoading = useAppSelector(({ auth }) => auth.isLoading);
@@ -30,22 +29,21 @@ const Login = (): JSX.Element => {
     control,
     handleSubmit,
     formState: { errors, isDirty, isValid },
-  } = useForm<LoginFormInputs>({
+  } = useForm<RegisterFormInputs>({
     mode: "onChange",
     resolver: yupResolver(schema),
     defaultValues: {
       email: "",
       password: "",
-      rememberMe: false,
     },
   });
 
-  const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
+  const onSubmit: SubmitHandler<RegisterFormInputs> = async (data) => {
     try {
-      await dispatch(loginRequest(data)).unwrap();
-      navigate(ROUTE_PATHS.home);
+    //   await dispatch(RegisterRequest(data)).unwrap();
+    //   navigate(ROUTE_PATHS.home);
     } catch (err) {
-      console.error('Login failed:', err);
+      console.error('Register failed:', err);
     }
   };
 
@@ -66,7 +64,7 @@ const Login = (): JSX.Element => {
                 id="email"
                 label="Email"
                 type="email"
-                name="login-email"
+                name="Register-email"
                 placeholder="Enter your Email"
                 inputClass="my-1"
                 labelClassName="my-1"
@@ -86,7 +84,7 @@ const Login = (): JSX.Element => {
                 id="password"
                 label="Password"
                 type="password"
-                name="login-password"
+                name="Register-password"
                 placeholder="Enter your password"
                 inputClass="mb-1"
                 labelClassName="my-1"
@@ -98,32 +96,9 @@ const Login = (): JSX.Element => {
               />
             )}
           />
-          <div className="flex items-center justify-between">
-            <Controller
-              name="rememberMe"
-              control={control}
-              render={({ field: { onChange, value } }) => (
-                <Checkbox
-                  id="rememberMe"
-                  name="rememberMe"
-                  checkBoxLabel="remember me"
-                  checkboxClass="flex flex-row-reverse items-center"
-                  color="secondary"
-                  onChange={onChange}
-                  checked={value}
-                />
-              )}
-            />
-            <Link
-              to={ROUTE_PATHS.register}
-              className="underline text-primary-light dark:text-primary-dark font-bold"
-            >
-              register
-            </Link>
-          </div>
           <div className="flex items-center justify-center">
             <Button
-              label="Login"
+              label="Submit"
               type="submit"
               labelClass="py-1 mb-1 text-sm font-semibold"
               className="!my-2 !w-52 !rounded-2xl"
@@ -137,4 +112,4 @@ const Login = (): JSX.Element => {
   );
 };
 
-export default Login;
+export default Register;

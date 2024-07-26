@@ -1,4 +1,3 @@
-import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import { ROUTE_PATHS } from "../utils/RoutesPaths";
@@ -6,10 +5,12 @@ import Layout from "../features/Layout/Layout";
 import Home from "../features/Home/Home";
 import AuthLayout from "../features/AuthLayout/AuthLayout";
 import Login from "../features/AuthLayout/Login/Login";
+import Register from "../features/AuthLayout/Register/Register";
+import { useAppSelector } from "../store";
+import Todo from "../features/Todo/Todo";
 
 const AppRoutes = () => {
-    const isAuth = false;
-
+    const isAuth = useAppSelector((state)=>state.auth?.userInfo?.token);
     return (
         <BrowserRouter>
             <Routes>
@@ -25,12 +26,19 @@ const AppRoutes = () => {
                     <Route path={ROUTE_PATHS.login}>
                         <Route index element={<Login />} />
                     </Route>
+                    <Route path={ROUTE_PATHS.register}>
+                        <Route index element={<Register />} />
+                    </Route>
+
                 </Route>
                 <Route
                     element={isAuth ? <Layout /> : <Navigate to={ROUTE_PATHS.login} />}
                 >
                     <Route path={ROUTE_PATHS.home}>
                         <Route index element={<Home />} />
+                    </Route>
+                    <Route path={ROUTE_PATHS.todo}>
+                        <Route index element={<Todo />} />
                     </Route>
                 </Route>
 
