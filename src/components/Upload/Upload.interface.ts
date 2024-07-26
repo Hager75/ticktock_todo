@@ -1,6 +1,6 @@
 export interface UploadProps {
   accept?: string;
-  onChange: (fileData: string | string[], file: File) => void;
+  onChange: (fileData: string, file: File) => void;
   required?: boolean;
   disabled?: boolean;
   uploadFileTitle?:string;

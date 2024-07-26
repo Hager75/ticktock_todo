@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Button, FormHelperText } from "@mui/material";
-import {CloudUploadRounded,Cancel} from '@mui/icons-material';
-
+import { ImageOutlined, Cancel,FileUploadOutlined } from '@mui/icons-material';
 import {
   IMAGE_TYPES,
   IMAGE_MAX_SIZE,
@@ -47,13 +46,13 @@ const Upload: React.FC<UploadProps> = ({
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    
+
     if (file) {
       if (!validateImageFile(file)) return;
       const reader = new FileReader();
       reader.onload = (event) => {
         onChange(event.target?.result as string, file);
-      }      
+      }
       reader.readAsDataURL(file);
     }
   };
@@ -66,7 +65,7 @@ const Upload: React.FC<UploadProps> = ({
         id={id || "upload-file"}
         type="file"
         accept={accept}
-        key={img}
+        key={`${img}${name}`}
         onChange={handleFileChange}
         required={required}
         disabled={disabled}
@@ -80,10 +79,10 @@ const Upload: React.FC<UploadProps> = ({
           <div>
             <div
               style={{ backgroundImage: `url(${img})` }}
-              className="pointer relative"
+              className="cursor-pointer	 relative w-36 h-36 bg-contain bg-no-repeat bg-center"
             >
               <div
-                className="absolute -right-4 bottom-0"
+                className="absolute -right-4 top-0 cursor-pointer"
                 onClick={(e) => {
                   e.preventDefault();
                   onClear && onClear();
@@ -96,17 +95,19 @@ const Upload: React.FC<UploadProps> = ({
           </div>
         ) : (
           <Button
-            variant="contained"
+            variant="text"
             component="div"
-            className={`flex flex-col w-36 h-36 !rounded-xl ${!backgroundImg && "!bg-slate-400"}`}
+            className="flex flex-col w-36 h-36 !rounded-xl"
             disabled={disabled}
-            style={{ backgroundImage: `url(${backgroundImg})` }}
           >
             <div>
-              <CloudUploadRounded />
+              <ImageOutlined sx={{
+                width: "100px",
+                height: "100px"
+              }} />
             </div>
-            <div className="text-center text-[#0071BC] leading-tight mt-2">
-              {uploadFileTitle}
+            <div className=" flex items-center justify-center text-[#0071BC] mt-2 !normal-case">
+            <span><FileUploadOutlined/></span>  {uploadFileTitle}
             </div>
           </Button>
         )}
