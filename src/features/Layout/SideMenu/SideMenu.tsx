@@ -19,8 +19,8 @@ import {
 import { styled } from "@mui/material/styles";
 
 import { ROUTE_PATHS } from "../../../utils/RoutesPaths";
-import { SideMenuProps, MenuItem } from "./SideMenu.interface";
 import { APP_NAME } from "../../../utils/Constants";
+import { SideMenuProps, MenuItem } from "./SideMenu.interface";
 
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",

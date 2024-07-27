@@ -1,12 +1,13 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import { ROUTE_PATHS } from "../utils/RoutesPaths";
+import { useAppSelector } from "../store";
+
 import Layout from "../features/Layout/Layout";
-import Home from "../features/Home/Home";
 import AuthLayout from "../features/AuthLayout/AuthLayout";
 import Login from "../features/AuthLayout/Login/Login";
 import Register from "../features/AuthLayout/Register/Register";
-import { useAppSelector } from "../store";
+import Home from "../features/Home/Home";
 import Todo from "../features/Todo/Todo";
 import AddEditTask from "../features/Todo/AddEditTask/AddEditTask";
 import Profile from "../features/Profile/Profile";

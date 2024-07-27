@@ -26,7 +26,7 @@ const getHeaders = () => {
 
 // Create Axios instance
 export const axiosInstance = axios.create({
-    baseURL: 'https://dummyjson.com/',
+    baseURL: 'https://dummyjson.com/', //env variable
 });
 
 axiosInstance.interceptors.request.use((request: any) => {
