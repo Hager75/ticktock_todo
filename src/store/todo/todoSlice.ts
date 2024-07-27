@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
 
 import { TodoState } from "./todo.interface";
 import { addTask, editTask, getList, getTaskDetails, removeTask } from "./todoThunks";
@@ -37,6 +38,7 @@ const todoSlice = createSlice({
             .addCase(removeTask.fulfilled, (state, action: PayloadAction<any>) => {
                 state.isLoading = false;
                 state.list = state.list.filter(task => task.id !== action.payload.id);
+                toast.success("Task was removed successfully!");
             })
             .addCase(removeTask.rejected, (state) => {
                 state.isLoading = false;
@@ -47,6 +49,7 @@ const todoSlice = createSlice({
             .addCase(addTask.fulfilled, (state, action: PayloadAction<any>) => {
                 state.isLoading = false;
                 state.list = action.payload;
+                toast.success("Task was added successfully!");
             })
             .addCase(addTask.rejected, (state) => {
                 state.isLoading = false;
@@ -57,6 +60,7 @@ const todoSlice = createSlice({
             .addCase(editTask.fulfilled, (state, action: PayloadAction<any>) => {
                 state.isLoading = false;
                 state.list = [...state.list,action.payload];
+                toast.success("Task was updated successfully!");
             })
             .addCase(editTask.rejected, (state) => {
                 state.isLoading = false;

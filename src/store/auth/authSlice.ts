@@ -1,59 +1,27 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AuthState, UserInfo } from "./auth.interface";
-import { clearUserInStorage, setUserInStorage } from "../../utils/Helpers";
-import { axiosInstance } from "../../network/axios";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { toast } from 'react-toastify';
+
+import { AuthState, ProfileInfo, UserInfo } from "./auth.interface";
+import { clearUserInStorage, getStorageType, getUserInfoInStorage, setUserInStorage } from "../../utils/Helpers";
+import { getProfileInfo, loginRequest, logoutRequest, registerRequest, updateProfile } from "./authThunks";
 
 
 const initialState: AuthState = {
-    userInfo:
-        JSON.parse(localStorage.getItem("user") as string) ||
-        JSON.parse(sessionStorage.getItem("user") as string) ||
-        null,
+    userInfo:getUserInfoInStorage(),
+    profileInfo:null,
     isLoading: false,
 };
 
-export const loginRequest = createAsyncThunk(
-    "auth/login",
-    async (data: { email: string; password: string, rememberMe: boolean }) => {
-        //TODO: to use data in real api
-        const fakeData = {
-            username: 'emilys',
-            password: 'emilyspass',
-        }
-        const response = await axiosInstance.post<UserInfo>("auth/login", fakeData);
-        data.rememberMe ? setUserInStorage(response.data, "local")
-            : setUserInStorage(response.data, "session");
-        return response.data;
-
-    }
-);
-
-export const logoutRequest = createAsyncThunk(
-    "auth/logout",
-    async () => {
-        // await axiosInstance.post("auth/logout");
-        clearUserInStorage();
-    }
-);
-
-export const registerRequest = createAsyncThunk(
-    "auth/register",
-    async (data:FormData) => {
-        const response = await axiosInstance.post<UserInfo>("auth/register", data);
-        return response.data;
-    }
-);
-
+const handleUserInfoUpdate = (state: AuthState, userInfo: UserInfo) => {
+    state.userInfo = {...state.userInfo, ...userInfo};
+    setUserInStorage(userInfo, getStorageType());
+};
 
 
 const authSlice = createSlice({
     name: "auth",
     initialState,
-    reducers: {
-        setUserInfo(state, action: PayloadAction<UserInfo>) {
-            state.userInfo = action.payload;
-        },
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder
             .addCase(loginRequest.pending, (state) => {
@@ -62,6 +30,8 @@ const authSlice = createSlice({
             .addCase(loginRequest.fulfilled, (state, action: PayloadAction<UserInfo>) => {
                 state.isLoading = false;
                 state.userInfo = action.payload;
+                handleUserInfoUpdate(state, action.payload);
+                toast.success("Logged in successfully!");
             })
             .addCase(loginRequest.rejected, (state, action) => {
                 state.isLoading = false;
@@ -72,6 +42,8 @@ const authSlice = createSlice({
             .addCase(logoutRequest.fulfilled, (state) => {
                 state.isLoading = false;
                 state.userInfo = null;
+                toast.success("Logout successfully!");
+                clearUserInStorage();
             })
             .addCase(logoutRequest.rejected, (state) => {
                 state.isLoading = false;
@@ -81,8 +53,30 @@ const authSlice = createSlice({
             })
             .addCase(registerRequest.fulfilled, (state) => {
                 state.isLoading = false;
+                toast.success("Registered successfully!");
             })
             .addCase(registerRequest.rejected, (state, action) => {
+                state.isLoading = false;
+            })
+            .addCase(updateProfile.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(updateProfile.fulfilled, (state, action: PayloadAction<UserInfo>) => {
+                state.isLoading = false;
+                handleUserInfoUpdate(state, action.payload);
+                toast.success("ypur profile updated successfully!");
+            })
+            .addCase(updateProfile.rejected, (state) => {
+                state.isLoading = false;
+            })
+            .addCase(getProfileInfo.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(getProfileInfo.fulfilled, (state, action: PayloadAction<ProfileInfo>) => {
+                state.isLoading = false;
+                state.profileInfo = action.payload;
+            })
+            .addCase(getProfileInfo.rejected, (state) => {
                 state.isLoading = false;
             })
 
@@ -90,8 +84,5 @@ const authSlice = createSlice({
     },
 
 });
-
-export const { setUserInfo } =
-    authSlice.actions;
 
 export default authSlice.reducer;

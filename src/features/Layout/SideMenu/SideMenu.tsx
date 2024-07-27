@@ -9,12 +9,12 @@ import {
   ListItemIcon,
   ListItemText,
   Box,
-  Collapse,
 } from "@mui/material";
 import {
   Close,
   ListAltOutlined,
   HomeOutlined,
+  PersonRounded
 } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
 
@@ -66,6 +66,15 @@ const SideMenu: React.FC<SideMenuProps> = ({
       slug: ROUTE_PATHS.todo,
 
     },
+    {
+      id: 3,
+      title: "Profile",
+      icon: <PersonRounded className="text-grey-light" />,
+      iconActive: <PersonRounded className="text-white dark:text-primary-dark" />,
+      activekey:"my-profile",
+      slug: ROUTE_PATHS.profile,
+
+    }
   ];
 
   const renderSideMenuItems = (device: string) => (

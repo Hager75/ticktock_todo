@@ -9,6 +9,7 @@ import Register from "../features/AuthLayout/Register/Register";
 import { useAppSelector } from "../store";
 import Todo from "../features/Todo/Todo";
 import AddEditTask from "../features/Todo/AddEditTask/AddEditTask";
+import Profile from "../features/Profile/Profile";
 
 const AppRoutes = () => {
     const isAuth = useAppSelector((state)=>state.auth?.userInfo?.token);
@@ -46,6 +47,9 @@ const AppRoutes = () => {
                     </Route>
                     <Route path={ROUTE_PATHS.editTask}>
                         <Route index element={<AddEditTask />} />
+                    </Route>
+                    <Route path={ROUTE_PATHS.profile}>
+                        <Route index element={<Profile />} />
                     </Route>
                 </Route>
 
