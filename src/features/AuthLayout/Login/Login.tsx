@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
 import { useAppDispatch, useAppSelector } from "../../../store";
-import { loginRequest } from "../../../store/auth/authSlice";
+import { loginRequest } from "../../../store/auth/authThunks";
 import { ROUTE_PATHS } from "../../../utils/RoutesPaths";
 import Button from "../../../components/Button/Button";
 import Checkbox from "../../../components/Checkbox/Checkbox";

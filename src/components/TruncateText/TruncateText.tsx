@@ -9,9 +9,9 @@ const TruncateText: React.FC<TruncateTextProps> = ({ text, length = 20 }) => {
   const truncatedText = () => text?.slice(0, length - 1) + "…";
 
   return (
-    <Box component="span">
+    <Box component="span" className={`${text.length > length && "cursor-pointer"}`}>
       {text.length > length ? (
-          <Tooltip title={text} placement="top">
+          <Tooltip title={text} placement="top" >
             <span>{truncatedText()}</span>
           </Tooltip>
       ) : (

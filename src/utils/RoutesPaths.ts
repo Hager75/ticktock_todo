@@ -5,4 +5,5 @@ export const ROUTE_PATHS = {
     todo:"/todo",
     addTask:"/todo/add-task",
     editTask:"/todo/edit-task/:id",
+    profile:"/my-profile"
 }

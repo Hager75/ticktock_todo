@@ -5,12 +5,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
 import { useAppDispatch, useAppSelector } from "../../../store";
-import { registerRequest } from "../../../store/auth/authSlice";
+import { registerRequest } from "../../../store/auth/authThunks";
 import { ROUTE_PATHS } from "../../../utils/RoutesPaths";
 import Button from "../../../components/Button/Button";
 import Input from "../../../components/Input/Input";
 import Upload from "../../../components/Upload/Upload";
 import { ENGLISH_CHARACTERS, PASSWORD_REGEX } from "../../../utils/Patterns";
+import { convertData } from "../../../utils/Helpers";
 
 interface RegisterFormInputs {
   email: string;
@@ -49,21 +50,6 @@ const Register = (): JSX.Element => {
       image: null,
     },
   });
-
-  const convertData = (data:RegisterFormInputs) => {
-    const formData = new FormData();
-    Object.keys(data).forEach(key => {
-      const value = data[key as keyof RegisterFormInputs];
-      if (value) {
-        if (key === 'image' && value instanceof File) {
-          formData.append(key, value);
-        } else {
-          formData.append(key, value.toString());
-        }
-      }
-    })
-    return formData
-  }
 
   const onSubmit: SubmitHandler<RegisterFormInputs> = async (data) => {
     // based on bussiness to upload image first to serve then send request to BE or to send image with data as a form data
