@@ -8,17 +8,17 @@ import {
 import { Add, Delete, ReportProblemRounded, ErrorOutlineRounded, BorderColorRounded } from '@mui/icons-material';
 import { TransitionGroup } from 'react-transition-group';
 
-import Button from '../../components/Button/Button';
-import Modal from '../../components/Modal/Modal';
 import { ROUTE_PATHS } from '../../utils/RoutesPaths';
-import TruncateText from '../../components/TruncateText/TruncateText';
-import { useAppDispatch, useAppSelector } from '../../store';
-import { clearTodoState } from '../../store/todo/todoSlice';
-import { addTask, getList, removeTask } from '../../store/todo/todoThunks';
-import { Task } from './Todo.interface';
 import { LOCAL_STORAGE_KEY } from '../../utils/Constants';
 import useOnlineStatus from '../../utils/hooks/useOnlineStatus';
 import { getTaskListStorage } from '../../utils/Helpers';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { clearTodoState } from '../../store/todo/todoSlice';
+import { addTask, getList, removeTask } from '../../store/todo/todoThunks';
+import Button from '../../components/Button/Button';
+import Modal from '../../components/Modal/Modal';
+import TruncateText from '../../components/TruncateText/TruncateText';
+import { Task } from './Todo.interface';
 
 const TodoList = () => {
     const navigate = useNavigate();
@@ -101,7 +101,7 @@ const TodoList = () => {
                         </>
                     }
                 />
-                {!isOnline && <IconButton edge="end" aria-label="edit" onClick={() => handleEditTask(task)} >
+                {isOnline && <IconButton edge="end" aria-label="edit" onClick={() => handleEditTask(task)} >
                     <BorderColorRounded color='action' />
                 </IconButton>}
                 <IconButton edge="end" aria-label="delete" onClick={() => handleDeleteTask(task)}>

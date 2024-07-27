@@ -16,6 +16,7 @@ interface LoginFormInputs {
   password: string;
   rememberMe: boolean;
 }
+
 const schema = yup.object().shape({
   email: yup.string().email("Invalid Email").required("Email is required"),
   password: yup.string().required("Password is required"),
@@ -52,7 +53,6 @@ const Login = (): JSX.Element => {
 
   return (
     <div className="flex flex-1 w-full justify-center items-center">
-
       <div className="flex flex-col justify-center py-5 px-10 w-[35rem] max-w-full">
         <div>
           <h2 className="dark:text-white text-lg font-bold mb-2">Ticktock Todo</h2>

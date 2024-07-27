@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+
 import { ENGLISH_CHARACTERS } from "../../utils/Patterns";
-import { convertData } from "../../utils/Helpers";
 import { ROUTE_PATHS } from "../../utils/RoutesPaths";
+import { convertData } from "../../utils/Helpers";
 import { useAppDispatch, useAppSelector } from "../../store";
+import { getProfileInfo, updateProfile } from "../../store/auth/authThunks";
 import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
 import Upload from "../../components/Upload/Upload";
-import { getProfileInfo, updateProfile } from "../../store/auth/authThunks";
-import { useNavigate } from "react-router-dom";
 
 interface ProfileFormInputs {
   email: string;

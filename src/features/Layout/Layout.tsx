@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
 import Box from "@mui/material/Box";
 
+import { THEME_MODE } from "../../utils/Constants";
+import { useAppSelector } from "../../store";
 import Navbar from "./Navbar/Navbar";
 import SideMenu from "./SideMenu/SideMenu";
 import MainContent from "./MainContent/MainContent";
-import { useAppSelector } from "../../store";
-import { THEME_MODE } from "../../utils/Constants";
 
 const drawerWidth = 240;
 interface Props {

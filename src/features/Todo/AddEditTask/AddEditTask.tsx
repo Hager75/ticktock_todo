@@ -10,6 +10,7 @@ import { TaskFormInputs } from "../Todo.interface";
 
 import { LOCAL_STORAGE_KEY, STATUS_VALUES } from "../../../utils/Constants";
 import { ROUTE_PATHS } from "../../../utils/RoutesPaths";
+import { getTaskListStorage } from "../../../utils/Helpers";
 
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { clearTodoState } from "../../../store/todo/todoSlice";
@@ -20,7 +21,6 @@ import Button from "../../../components/Button/Button";
 import DatePicker from "../../../components/DatePicker/DatePicker";
 import Select from "../../../components/Select/Select";
 import useOnlineStatus from "../../../utils/hooks/useOnlineStatus";
-import { getTaskListStorage } from "../../../utils/Helpers";
 
 const schema = yup.object().shape({
     title: yup.string().required("Title is required"),
@@ -57,6 +57,7 @@ const AddEditTask = (): JSX.Element => {
         control,
         handleSubmit,
         setValue,
+        trigger,
         formState: { errors, isDirty, isValid },
     } = useForm<TaskFormInputs>({
         mode: "onChange",
@@ -96,7 +97,7 @@ const AddEditTask = (): JSX.Element => {
             const day = String(new Date().getDate()).padStart(2, '0');
             const month = String(new Date().getMonth() + 1).padStart(2, '0');
             const year = new Date().getFullYear();
-
+            
             setValue("dueDate", `${day}/${month}/${year}`);
 
         }
