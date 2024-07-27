@@ -10,6 +10,7 @@ import "./App.scss";
 
 function App() {
   const themeMode = useAppSelector((state) => state.userPreferences?.theme);
+
   const theme = createTheme({
     palette: {
       mode: themeMode === THEME_MODE.light ? 'light' : 'dark',

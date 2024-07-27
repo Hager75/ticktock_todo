@@ -14,35 +14,63 @@ import { ROUTE_PATHS } from '../../utils/RoutesPaths';
 import TruncateText from '../../components/TruncateText/TruncateText';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { clearTodoState } from '../../store/todo/todoSlice';
-import { getList, removeTask } from '../../store/todo/todoThunks';
+import { addTask, getList, removeTask } from '../../store/todo/todoThunks';
 import { Task } from './Todo.interface';
+import { LOCAL_STORAGE_KEY } from '../../utils/Constants';
+import useOnlineStatus from '../../utils/hooks/useOnlineStatus';
+import { getTaskListStorage } from '../../utils/Helpers';
 
 const TodoList = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const taskList = useAppSelector((state) => state.todo.list);
     const isLoading = useAppSelector((state) => state.todo.isLoading);
-
+    const isOnline = useOnlineStatus();
+    const [offlineList, setOfflineList] = useState<Task[]>([]);
     const [deleteTaskModal, setDeleteTaskModal] = useState<{ isOpen: boolean; task: Task | null }>({ isOpen: false, task: null });
 
     useEffect(() => {
-        dispatch(getList())
+        if (isOnline) {
+            syncOfflineTasks();
+            dispatch(getList());
+        } else {
+            const offlineTasks = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || "[]");
+            setOfflineList(offlineTasks);
+        }
         return () => {
             dispatch(clearTodoState());
         };
-    }, [dispatch]);
+    }, [dispatch, isOnline]);
 
+    const syncOfflineTasks = async () => {
+        const offlineTasks = getTaskListStorage();
+        if (offlineTasks.length > 0) {
+            try {
+                for (const task of offlineTasks) {
+                    await dispatch(addTask(task)).unwrap();
+                }
+                localStorage.removeItem(LOCAL_STORAGE_KEY);
+            } catch (err) {
+                console.error('Failed to sync offline tasks:', err);
+            }
+        }
+    };
 
     const handleAddTask = () => {
         navigate(ROUTE_PATHS.addTask);
     };
 
-    const handleEditTask = (task:Task) => {
+    const handleEditTask = (task: Task) => {
         navigate(ROUTE_PATHS.editTask.replace(":id", task.id.toString()));
     }
 
     const handleConfirmDeleteModal = () => {
-        dispatch(removeTask(deleteTaskModal.task?.id!));
+        if (isOnline) {
+            dispatch(removeTask(+deleteTaskModal.task?.id!));
+        } else {
+            setOfflineList((prevList) => prevList.filter((task) => task.id !== deleteTaskModal.task?.id!));
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(offlineList.filter((task) => task.id !== deleteTaskModal.task?.id!)))
+        }
         setDeleteTaskModal({ isOpen: false, task: null });
     };
 
@@ -73,9 +101,9 @@ const TodoList = () => {
                         </>
                     }
                 />
-                <IconButton edge="end" aria-label="edit" onClick={() => handleEditTask(task)}>
+                {!isOnline && <IconButton edge="end" aria-label="edit" onClick={() => handleEditTask(task)} >
                     <BorderColorRounded color='action' />
-                </IconButton>
+                </IconButton>}
                 <IconButton edge="end" aria-label="delete" onClick={() => handleDeleteTask(task)}>
                     <Delete color='error' />
                 </IconButton>
@@ -104,22 +132,25 @@ const TodoList = () => {
                 </div>
             }
 
-            {taskList?.length === 0 && !isLoading &&
+            {taskList?.length === 0 && !isLoading && isOnline &&
                 <Typography className='flex justify-center items-center h-56 font-semibold !text-lg' color="secondary">
                     <ErrorOutlineRounded color='secondary' className='me-1' />   There is no tasks, you could add one
                 </Typography>
             }
-    
+
             <div>
                 <List>
                     <TransitionGroup>
-                        {taskList?.length > 0 && !isLoading && taskList.map((task) => (
+                        {taskList?.length > 0 && !isLoading && isOnline && taskList.map((task) => (
+                            <Collapse key={task.id}>{renderItem(task, handleDeleteTask)}</Collapse>
+                        ))}
+                        {!isOnline && offlineList.map((task) => (
                             <Collapse key={task.id}>{renderItem(task, handleDeleteTask)}</Collapse>
                         ))}
                     </TransitionGroup>
                 </List>
 
-            </div> 
+            </div>
             <Modal
                 modalTitle={<span className="!text-xxl flex items-center"><ReportProblemRounded color="error" className='mx-2 !text-xxl' /> Alert!</span>}
                 handleClose={() => { handleCloseDeleteModal() }}

@@ -12,7 +12,7 @@ import AddEditTask from "../features/Todo/AddEditTask/AddEditTask";
 import Profile from "../features/Profile/Profile";
 
 const AppRoutes = () => {
-    const isAuth = useAppSelector((state)=>state.auth?.userInfo?.token);
+    const isAuth = useAppSelector((state)=>state.auth?.userInfo?.token);    
     return (
         <BrowserRouter>
             <Routes>

@@ -19,3 +19,5 @@ export const STATUS_VALUES = {
     inprogress:"1",
     todo:"3"
 }
+
+export const LOCAL_STORAGE_KEY = "offline_tasks";

@@ -1,4 +1,6 @@
+import { Task } from "../features/Todo/Todo.interface";
 import { UserInfo } from "../store/auth/auth.interface";
+import { LOCAL_STORAGE_KEY } from "./Constants";
 import { Data, StorageType } from "./interfaces";
 
 export const setUserInStorage = (user: UserInfo, storage: StorageType) => {
@@ -38,3 +40,7 @@ export const convertData = <T extends Data>(data: T) => {
 export const getStorageType = (): StorageType => {
   return localStorage.getItem("user") ? StorageType.Local : StorageType.Session;
 };
+
+export const getTaskListStorage = (): Task[] =>  {
+  return JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || "[]")
+}
