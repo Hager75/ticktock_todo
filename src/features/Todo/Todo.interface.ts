@@ -1,10 +1,9 @@
 export interface Task {
-    id:number;
+    id:number| string;
     title: string;
     description: string;
     dueDate: string;
     status: string;
-    
 }
 export interface TaskRes extends Partial<Task>{
     id:number;

@@ -1,6 +1,9 @@
 import axios from "axios";
 import { toast } from 'react-toastify';
 
+import { logoutRequest } from "../store/auth/authThunks";
+import { store } from "../store";
+
 // Function to get headers with token
 const getHeaders = () => {
     const userData =
@@ -26,7 +29,6 @@ export const axiosInstance = axios.create({
     baseURL: 'https://dummyjson.com/',
 });
 
-
 axiosInstance.interceptors.request.use((request: any) => {
     request.headers = { ...request.headers, ...getHeaders() };
     return request;
@@ -39,6 +41,7 @@ axiosInstance.interceptors.response.use(
         let errorMsg = "";
         if (error?.response?.status === 401) {
             errorMsg = "Unauthorized access - please login."
+            store.dispatch(logoutRequest())
         } else if (error?.message === "Network Error") {
             // Handle network errors
             errorMsg = "Network error - please check your connection."

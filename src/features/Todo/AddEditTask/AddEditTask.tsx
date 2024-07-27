@@ -3,12 +3,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, Typography } from "@mui/material";
 
 import { Option } from "../../../components/Select/Select.interface";
 import { TaskFormInputs } from "../Todo.interface";
 
-import { STATUS_VALUES } from "../../../utils/Constants";
+import { LOCAL_STORAGE_KEY, STATUS_VALUES } from "../../../utils/Constants";
 import { ROUTE_PATHS } from "../../../utils/RoutesPaths";
 
 import { useAppDispatch, useAppSelector } from "../../../store";
@@ -19,6 +19,8 @@ import Input from "../../../components/Input/Input";
 import Button from "../../../components/Button/Button";
 import DatePicker from "../../../components/DatePicker/DatePicker";
 import Select from "../../../components/Select/Select";
+import useOnlineStatus from "../../../utils/hooks/useOnlineStatus";
+import { getTaskListStorage } from "../../../utils/Helpers";
 
 const schema = yup.object().shape({
     title: yup.string().required("Title is required"),
@@ -41,10 +43,12 @@ const statusOptions: Option[] = [
         label: "Todo",
     },
 ]
+
 const AddEditTask = (): JSX.Element => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const { id } = useParams();
+    const isOnline = useOnlineStatus();
 
     const isLoading = useAppSelector(({ todo }) => todo.isLoading);
     const selectedTask = useAppSelector(({ todo }) => todo.task);
@@ -66,10 +70,10 @@ const AddEditTask = (): JSX.Element => {
     });
 
     useEffect(() => {
-        if (id) {
+        if (id && isOnline) {
             dispatch(
                 getTaskDetails(+id)
-            );
+            )
         }
     }, [id]);
 
@@ -104,13 +108,19 @@ const AddEditTask = (): JSX.Element => {
         };
     }, []);
 
-
     const onSubmit: SubmitHandler<TaskFormInputs> = async (data) => {
-        try {
-            id ? await dispatch(editTask({ data, id })).unwrap() : await dispatch(addTask(data)).unwrap()
+        if (isOnline) {
+            try {
+                id ? await dispatch(editTask({ data, id })).unwrap() : await dispatch(addTask(data)).unwrap()
+                navigate(ROUTE_PATHS.todo);
+            } catch (err) {
+                console.error('failed:', err);
+            }
+        } else {
+            const offlineTasks = getTaskListStorage();
+            offlineTasks.push({ ...data, id: new Date().toISOString()});
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(offlineTasks));
             navigate(ROUTE_PATHS.todo);
-        } catch (err) {
-            console.error('failed:', err);
         }
     };
 
@@ -126,7 +136,7 @@ const AddEditTask = (): JSX.Element => {
                     </div>
                 }
 
-                {(((id && !isLoading) || !id )  &&
+                {(((id && !isLoading) || !id) &&
                     <form onSubmit={handleSubmit(onSubmit)} noValidate>
                         <Controller
                             name="title"
@@ -222,6 +232,12 @@ const AddEditTask = (): JSX.Element => {
                         </div>
                     </form>
                 )}
+                {!isOnline && (
+                    <Typography color="error" align="center" variant="body2">
+                        You are offline. The task will be saved locally and synchronized when you are back online.
+                    </Typography>
+                )}
+
             </div>
 
         </div>)
