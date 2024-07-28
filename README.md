@@ -37,7 +37,7 @@ TickTock Todo is a task management application built with React, TypeScript, and
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/your-username/ticktock-todo.git
+    git clone https://github.com/Hager75/ticktock_todo.git
     ```
 
 2. Navigate to the project directory:
