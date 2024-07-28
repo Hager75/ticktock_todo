@@ -33,10 +33,12 @@ const DatePicker: React.FC<DatePickerProps> = ({
 
   const handleDateChange = (selectedDate: Dayjs | null) => {
     const year = selectedDate?.year();
-    if ((selectedDate && selectedDate.format("DD/MM/YYYY") === "Invalid Date") || (selectedDate?.isValid() && year && year.toString()?.length < 4)) {
+    const now = dayjs();
+    if ((selectedDate && selectedDate.format("DD/MM/YYYY") === "Invalid Date") ||
+      (selectedDate?.isValid() && year && year.toString()?.length < 4) ||
+      (selectedDate && selectedDate.isBefore(now, 'day'))) {
       setInvalidDate(true);
-      setDate(selectedDate);
-    } else   {
+    } else {
       setInvalidDate(false);
       setDate(selectedDate);
       const formattedDate = selectedDate ? selectedDate.format("DD/MM/YYYY") : null;

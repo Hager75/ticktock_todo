@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "../../store";
 import { toggleTheme } from "../../store/userPreferences/userPreferencesSlice";
 import { THEME_MODE } from "../../utils/Constants";
 
-const ThemeSwitcher: React.FC<{iconClassName?:string}> = ({iconClassName="px-10 py-5"}) => {
+const ThemeSwitcher: React.FC<{iconClassName?:string}> = ({iconClassName="px-10 pt-5"}) => {
 
     const dispatch = useAppDispatch();
     const themeMode = useAppSelector((state) => state.userPreferences?.theme);

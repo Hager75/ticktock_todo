@@ -53,10 +53,10 @@ const Login = (): JSX.Element => {
 
   return (
     <div className="flex flex-1 w-full justify-center items-center">
-      <div className="flex flex-col justify-center py-5 px-10 w-[35rem] max-w-full">
+      <div className="flex flex-col justify-center pb-5 pt-8 px-10 w-[35rem] max-w-full card">
         <div>
-          <h2 className="dark:text-white text-lg font-bold mb-2">Ticktock Todo</h2>
-          <p className="text-regular">welcome</p>
+          <h2 className="dark:text-white text-lg font-bold mb-1">Ticktock Todo</h2>
+          <p className="text-regular mb-3">welcome</p>
         </div>
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
           <Controller

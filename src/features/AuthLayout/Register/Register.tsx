@@ -65,18 +65,15 @@ const Register = (): JSX.Element => {
 
   return (
     <div className="flex flex-1 w-full justify-center items-center">
-
-      <div className="flex flex-col justify-center py-5 px-10 w-[35rem] max-w-full">
-        <div>
-          <h2 className="dark:text-white text-lg font-bold mb-2">Ticktock Todo</h2>
-        </div>
+      <div className="flex flex-col justify-center pb-5 pt-8 px-10 mb-5 w-[35rem] max-w-full card">
+       
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
           <Controller
             name="image"
             control={control}
             render={({ field: { onChange } }) => (
               <Upload
-                className="mb-4"
+                className="mb-2"
                 onChange={(img, file) => {
                   setImg(img);
                   onChange(file);
