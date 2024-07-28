@@ -228,6 +228,7 @@ const AddEditTask = (): JSX.Element => {
                                 labelClass="py-1 mb-1 text-sm font-semibold"
                                 className="!my-2 !w-52 !rounded-2xl"
                                 disabled={!isDirty || !isValid || isLoading}
+                                showLoader={isLoading}
                             />
                         </div>
                     </form>

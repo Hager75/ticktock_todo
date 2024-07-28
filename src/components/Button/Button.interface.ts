@@ -8,4 +8,5 @@ export interface ButtonProps {
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   color?: "primary" | "secondary" | "error";
   icon?: React.ReactNode;
+  showLoader?:boolean;
 }
