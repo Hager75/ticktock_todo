@@ -56,7 +56,7 @@ const Profile = (): JSX.Element => {
     dispatch(
       getProfileInfo()
     );
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (profileInfo) {
@@ -69,7 +69,7 @@ const Profile = (): JSX.Element => {
       setValue("name", username ?? userInfo?.username ?? "");
       setImg(image ?? userInfo?.image ?? '')
     }
-  }, []);
+  }, [profileInfo, setValue, userInfo]);
 
 
   const onSubmit: SubmitHandler<ProfileFormInputs> = async (data) => {
