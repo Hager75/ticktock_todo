@@ -128,6 +128,7 @@ const Login = (): JSX.Element => {
               type="submit"
               labelClass="py-1 mb-1 text-sm font-semibold"
               className="!my-2 !w-52 !rounded-2xl"
+              showLoader={isLoading}
               disabled={!isDirty || !isValid || isLoading}
             />
           </div>

@@ -1,5 +1,5 @@
 import React from "react";
-import { Button as MuiButton } from "@mui/material";
+import { CircularProgress, Button as MuiButton } from "@mui/material";
 import { ButtonProps } from "./Button.interface";
 
 const Button: React.FC<ButtonProps> = ({
@@ -11,10 +11,11 @@ const Button: React.FC<ButtonProps> = ({
   disabled = false,
   onClick,
   color = "primary",
-  icon
+  icon,
+  showLoader=false,
 }) => (
   <MuiButton
-    className={`!normal-case ${className}`}
+    className={`!normal-case ${className} relative`}
     variant={outlined ? "outlined" : "contained"}
     type={type}
     disabled={disabled}
@@ -23,6 +24,9 @@ const Button: React.FC<ButtonProps> = ({
     color={color}
     startIcon={icon}
   >
+    {showLoader && <div className='flex justify-center items-center h-56 absolute'>
+      <CircularProgress color="inherit" />
+    </div>}
     <span className={labelClass}>{label}</span>
   </MuiButton>
 );
