@@ -21,8 +21,10 @@ function App() {
   });
 
   useEffect(() => {
-    document.documentElement.classList.remove('light', 'dark');
-    document.documentElement.classList.add(themeMode);
+    if (themeMode) {
+      document.documentElement.classList.remove('light', 'dark');
+      document.documentElement.classList.add(themeMode);
+    }
   }, [themeMode]);
 
 

@@ -43,7 +43,7 @@ const SideMenu: React.FC<SideMenuProps> = ({
 
   useEffect(() => {
     setPath(location.pathname);
-  }, [location]);
+  }, [location.pathname]);
 
   const activeRoute = (activekey: string) => {    
     return path.includes(activekey);

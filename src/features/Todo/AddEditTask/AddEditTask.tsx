@@ -76,7 +76,7 @@ const AddEditTask = (): JSX.Element => {
                 getTaskDetails(+id)
             )
         }
-    }, [id]);
+    }, [id, isOnline, dispatch]);
 
     useEffect(() => {
         if (selectedTask && Object.keys(selectedTask).length) {
@@ -101,13 +101,13 @@ const AddEditTask = (): JSX.Element => {
             setValue("dueDate", `${day}/${month}/${year}`);
 
         }
-    }, [selectedTask]);
+    }, [selectedTask,setValue]);
 
     useEffect(() => {
         return () => {
             dispatch(clearTodoState());
         };
-    }, []);
+    }, [dispatch]);
 
     const onSubmit: SubmitHandler<TaskFormInputs> = async (data) => {
         if (isOnline) {
