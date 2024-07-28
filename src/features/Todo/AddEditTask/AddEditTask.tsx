@@ -57,7 +57,6 @@ const AddEditTask = (): JSX.Element => {
         control,
         handleSubmit,
         setValue,
-        trigger,
         formState: { errors, isDirty, isValid },
     } = useForm<TaskFormInputs>({
         mode: "onChange",
